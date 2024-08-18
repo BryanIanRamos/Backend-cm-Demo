@@ -85,6 +85,36 @@ def create_post_data():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
     
-    return str(data)
+    # return str(data)
 
-    # return jsonify({'message': 'Post data created successfully', 'data_id': new_post_data.data_id}), 201
+    return jsonify({'message': 'Post data created successfully', 'data_id': new_post_data.data_id}), 201
+
+
+@post_data_bp.route('/<int:data_id>', methods=['DELETE'])
+def delete_post_data(data_id):
+
+    data = PostsData.query.get(data_id)
+
+    if data is None:
+        return jsonify({'error': 'Data not found.'}), 404
+    
+    date_id = data.date_id
+
+    try:
+        db.session.delete(data)    
+        db.session.commit()  
+
+        date_created = PostsData.query.filter_by(date_id=date_id).all()
+
+        if not date_created:
+            date_record = Date.query.get(date_id)
+            if date_record:
+                db.session.delete(date_record)
+                db.session.commit()
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error':str(e)}), 500 
+    
+    return jsonify({'message': 'Data has been deleted successfully.'}), 200
+    

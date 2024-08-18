@@ -3,10 +3,12 @@ from models.db_models import db, Accounts, Date
 from werkzeug.security import generate_password_hash
 from datetime import datetime
 from dateutil import parser
+from decorators.authUdecorator import token_required
 
 accounts_bp = Blueprint('accounts_tbl', __name__)
 
 @accounts_bp.route('', methods=['GET'])
+@token_required
 def get_accounts():
     accounts = Accounts.query.all()
 
@@ -34,6 +36,7 @@ def get_accounts():
 
 
 @accounts_bp.route('/<int:account_id>', methods=['GET'])
+@token_required
 def get_account(account_id):
     account = Accounts.query.filter_by(account_id=account_id).first()
 
@@ -59,6 +62,7 @@ def get_account(account_id):
 
 
 @accounts_bp.route('', methods=['POST'])
+@token_required
 def register_account():
     email = request.form.get('email')
     username = request.form.get('username')
@@ -113,6 +117,7 @@ def register_account():
 
 
 @accounts_bp.route('/<int:account_id>', methods=['PUT'])
+@token_required
 def update_account(account_id):
     account = Accounts.query.get(account_id)
 
@@ -146,6 +151,7 @@ def update_account(account_id):
 
 
 @accounts_bp.route('/<int:acc_id>', methods=['DELETE'])
+@token_required
 def delete_account(acc_id):
     # Retrieve the account by ID
     account = Accounts.query.get(acc_id)

@@ -7,8 +7,8 @@ class Date(db.Model):
     __tablename__ = 'date_created_tbl'
 
     date_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow) 
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True) 
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)
 
     def __repr__(self):
         return f'<Date {self.date_id}>'
@@ -25,6 +25,8 @@ class Accounts(db.Model):
 
     # Define the relationship to the Date model
     date_time = db.relationship('Date', backref=db.backref('accounts', lazy=True))
+    # Define the relationship to the Token model
+    tokens = db.relationship('Token', backref='account', lazy=True)
 
     def __repr__(self):
         return f'<Accounts {self.username}>'
@@ -39,6 +41,7 @@ class Posts(db.Model):
 
     # Define the relationship to the Date model
     date_time = db.relationship('Date', backref=db.backref('posts', lazy=True))
+    # Define the relationship to the Accounts model
     creator = db.relationship('Accounts', backref=db.backref('posts', lazy=True))
 
     def __repr__(self):
@@ -57,6 +60,17 @@ class PostsData(db.Model):
     def __repr__(self):
         return f'<PostsData {self.data_id}>'
 
+class Token(db.Model):
+    __tablename__ = 'tokens_tbl'
 
+    token_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('accounts_tbl.account_id'), nullable=False)
+    token = db.Column(db.String(512), nullable=False)  # The token value
+    expires_at = db.Column(db.DateTime, nullable=False)  # When the token expires
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)  # When the token was created
 
+    # # Define the relationship to the Accounts model
+    # account = db.relationship('Accounts', backref='tokens', lazy=True)
 
+    def __repr__(self):
+        return f'<Token {self.token_id}>'
