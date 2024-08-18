@@ -25,5 +25,5 @@ def token_required(f):
             return jsonify({'message': 'Invalid token'}), 401
 
         return f(*args, **kwargs)
-
+# jjk
     return decorated_function
