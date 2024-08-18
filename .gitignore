@@ -1,0 +1,40 @@
+# Python and Flask specific
+*.pyc
+*.pyo
+__pycache__/
+*.pyd
+*.db
+*.sqlite
+.env
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Logs
+*.log
+
+# Build outputs
+/build/
+dist/
+
+# React and frontend
+node_modules/
+*.css.map
+*.js.map
+*.tsbuildinfo
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary and backup files
+*.bak
+*.tmp
