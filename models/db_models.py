@@ -25,8 +25,7 @@ class Accounts(db.Model):
 
     # Define the relationship to the Date model
     date_time = db.relationship('Date', backref=db.backref('accounts', lazy=True))
-    # Define the relationship to the Token model
-    tokens = db.relationship('Token', backref='account', lazy=True)
+    tokens = db.relationship('Token', backref='accounts', lazy=True)
 
     def __repr__(self):
         return f'<Accounts {self.username}>'
